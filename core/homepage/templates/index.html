@@ -68,7 +68,7 @@
                 <i class="bx bx-user"></i> Bienbenido {{ request.user.username }}
               </a>
             {% else %}
-              <a href="#"><i class="bx bx-door-open"></i> Login</a>
+              <a href="{% url 'login' %}"><i class="bx bx-door-open"></i> Login</a>
             {% endif %} 
           </li>          
         </ul>

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Libs
-    #'widget_tweaks', #Librería para atributos en html
+    'widget_tweaks', #Librería para atributos en html
     # Aplicaciones
     'core.erp',
     'core.homepage',
@@ -131,3 +131,12 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Redireccionamiento si login ha sido correcto:
+LOGIN_REDIRECT_URL = '/erp/dashboard/'
+
+# Redireccionamiento por defecto para el logout si no se especifica ningún otro redireccionamiento.
+LOGOUT_REDIRECT_URL = '/login/'
+
+# Redireccionamiento si no está logado
+LOGIN_URL = '/login/'

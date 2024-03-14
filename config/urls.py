@@ -19,6 +19,7 @@ from core.homepage.views import IndexView
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
+    path('login/', include('core.login.urls')),
     path('admin/', admin.site.urls),
     path('erp/', include('core.erp.urls')),
 ]
