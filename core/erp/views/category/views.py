@@ -23,6 +23,7 @@ class CategoryListView(ListView):
     template_name = 'category/list.html'
 
     @method_decorator(csrf_exempt)
+    @method_decorator(login_required) # Proteger vista con login
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -48,6 +49,10 @@ class CategoryCreateView(CreateView):
     form_class = CategoryForm
     template_name = 'category/create.html'
     success_url = reverse_lazy('erp:category_list')
+
+    @method_decorator(login_required) # Proteger vista con login
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = {}
@@ -87,6 +92,7 @@ class CategoryUpdateView(UpdateView):
     template_name = 'category/create.html'
     success_url = reverse_lazy('erp:category_list')
 
+    @method_decorator(login_required) # Proteger vista con login
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -117,6 +123,11 @@ class CategoryDeleteView(DeleteView):
     model = Category
     template_name = 'category/delete.html'
     success_url = reverse_lazy('erp:category_list')
+
+    @method_decorator(login_required) # Proteger vista con login
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
