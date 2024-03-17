@@ -9,15 +9,6 @@ from django.utils.decorators import method_decorator
 from core.erp.forms import CategoryForm
 from core.erp.models import Category
 
-
-def category_list(request):
-    data = {
-        'title': 'Listado de Categorías',
-        'categories': Category.objects.all()
-    }
-    return render(request, 'category/list.html', data)
-
-
 class CategoryListView(ListView):
     model = Category
     template_name = 'category/list.html'
@@ -42,7 +33,6 @@ class CategoryListView(ListView):
         context['list_url'] = reverse_lazy('erp:category_list')
         context['entity'] = 'Categorias'
         return context
-
 
 class CategoryCreateView(CreateView):
     model = Category
@@ -85,7 +75,6 @@ class CategoryCreateView(CreateView):
         context['action'] = 'add'
         return context
 
-
 class CategoryUpdateView(UpdateView):
     model = Category
     form_class = CategoryForm
@@ -118,7 +107,6 @@ class CategoryUpdateView(UpdateView):
         context['action'] = 'edit'
         return context
 
-
 class CategoryDeleteView(DeleteView):
     model = Category
     template_name = 'category/delete.html'
@@ -128,6 +116,14 @@ class CategoryDeleteView(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            self.object.delete()
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
