@@ -18,5 +18,3 @@ class Category(models.Model):
         verbose_name = 'Categoria'
         verbose_name_plural = 'Categorias'
         ordering = ['id']
-
-
