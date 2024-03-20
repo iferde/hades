@@ -16,10 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from core.homepage.views import IndexView
+from core.login.views import *
+
+#Para trabajar en desarrollo con archivos media
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('login/', include('core.login.urls')),
     path('admin/', admin.site.urls),
     path('erp/', include('core.erp.urls')),
-]
+] 
+
+#Para trabajar en desarrollo con archivos media
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
