@@ -48,7 +48,6 @@ class CategoryForm(ModelForm):
     #         # self.add_error('name', 'Le faltan caracteres')
     #     return cleaned
 
-
 class ProductForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -76,4 +75,20 @@ class ProductForm(ModelForm):
         except Exception as e:
             data['error'] = str(e)
         return data
-    
+
+class TestForm(Form):
+    categorias = ModelChoiceField(queryset=Category.objects.all(), widget=Select(attrs={
+        'class':'form-control'
+    }))
+
+    productos = ModelChoiceField(queryset=Product.objects.none(), widget=Select(attrs={
+        'class':'form-control'
+    }))
+
+    categorias2 = ModelChoiceField(queryset=Category.objects.all(), widget=Select(attrs={
+        'class':'form-control select2', 'style':'width:100%'
+    }))
+
+    productos2 = ModelChoiceField(queryset=Product.objects.none(), widget=Select(attrs={
+        'class':'form-control select2', 'style':'width:100%'
+    }))
