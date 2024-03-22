@@ -55,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Libería de django-crum para gestión de usuarios: https://pythonhosted.org/django-crum/
+    'crum.CurrentRequestUserMiddleware', 
 ]
 
 ROOT_URLCONF = 'config.urls'
