@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse
 from django.views.generic import TemplateView
-from core.erp.models import Product
+from core.erp.models import Product,Category
 
 from core.erp.forms import TestForm
 
@@ -27,6 +27,12 @@ class TextView(TemplateView):
                 data = [{'id':'', 'text':'-------------'}]
                 for i in Product.objects.filter(cat_id=request.POST['id']):
                     data.append({'id': i.id,'text':i.name,'data':i.cat.toJSON()}) # La última variable trae todo el objeto
+            elif action == 'autocomplete':
+                data = []                
+                for i in Category.objects.filter(name__icontains=request.POST['term'])[0:10]:
+                    item = i.toJSON()
+                    item['value'] = i.name
+                    data.append(item) # La última variable trae todo el objeto
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
         except Exception as e:
@@ -37,5 +43,6 @@ class TextView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Select Anidados | Django'
         context['title2'] = 'Select Anidados (con select2) | Django'
+        context['title3'] = 'Autocompletado (con jquery UI) | Django'
         context['form'] = TestForm()
         return context

@@ -1,15 +1,18 @@
-{% extends 'layout.html' %} {% load static %} {% block head %}
-<link
-  href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}"
-  rel="stylesheet"
-/>
-<link
-  href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}"
-  rel="stylesheet"
-/>
+{% extends 'layout.html' %} {% load static %}
+
+{% block head %}
+<!-- select2 (selects anidados)-->
+<link href="{% static 'lib/jquery-ui-1.12.1/jquery-ui.css' %}" rel="stylesheet"/>
+<script src="{% static 'lib/jquery-ui-1.12.1/jquery-ui.js' %}"></script>
+
+<!-- select2 (selects anidados)-->
+<link href="{% static 'lib/select2-4.0.13/css/select2.min.css' %}" rel="stylesheet"/>
+<link href="{% static 'lib/select2-4.0.13/css/select2-bootstrap4.min.css' %}" rel="stylesheet"/>
 <script src="{% static 'lib/select2-4.0.13/js/select2.min.js' %}"></script>
 <script src="{% static 'lib/select2-4.0.13/js/i18n/es.js' %}"></script>
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
 <form method="post" action="." enctype="multipart/form-data">
   <div class="card card-primary">
     <div class="card-header">
@@ -45,6 +48,21 @@
       <div class="form-group">
         <label>Productos</label>
         {{form.productos2}}
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-plus"></i>
+        {{ title3 }}
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label>Buscador de Categorías</label>
+        {{form.search}}
       </div>
     </div>
   </div>
@@ -134,6 +152,33 @@
     select_products2.on("change", function () {
       var value = select_products2.select2("data")[0];
       console.log(value);
+    });
+
+    $( 'input[name="search"]' ).autocomplete({
+      source: function(request,response){
+        $.ajax({
+          url: window.location.pathname,
+          type: "POST",
+          data: {
+            'action': 'autocomplete',
+            'term': request.term
+          },
+          dataType: "json",
+        })
+        .done(function (data) {
+            response(data);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+          // Vacío
+        })
+        .always(function (data) {
+        });
+      },
+      dalay: 500, //Metódo para indicar cuanto tarda en buscar
+      minLength: 2, // Número de caracteres a partir empieza a buscar
+      select: function(event, ui) {
+        console.log (ui.item);
+      }
     });
   });
 </script>
