@@ -153,7 +153,14 @@ class TestForm(Form):
         'class':'form-control select2', 'style':'width:100%'
     }))
 
+    #Autocompletar con Jquery UI
+
     search = CharField(widget=TextInput(attrs={
         'class': 'form-control',
         'placeholder': 'Ingrese una descripción'
+    }))
+
+    # Autocompletar con Select2
+    search2 = ModelChoiceField(queryset=Product.objects.none(), widget=Select(attrs={
+        'class':'form-control select2', 'style':'width:100%'
     }))

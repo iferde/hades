@@ -19,6 +19,7 @@ class TextView(TemplateView):
         data = {}
         try:
             action = request.POST['action']
+            print(action)
             if action == 'search_product_id':
                 data = []
                 for i in Product.objects.filter(cat_id=request.POST['id']):
@@ -33,6 +34,12 @@ class TextView(TemplateView):
                     item = i.toJSON()
                     item['value'] = i.name
                     data.append(item) # La última variable trae todo el objeto
+            elif action == 'autocomplete_2':
+                data = []                
+                for i in Category.objects.filter(name__icontains=request.POST['term'])[0:10]:
+                    item = i.toJSON()
+                    item['text'] = i.name
+                    data.append(item) # La última variable trae todo el objeto
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
         except Exception as e:
@@ -44,5 +51,6 @@ class TextView(TemplateView):
         context['title'] = 'Select Anidados | Django'
         context['title2'] = 'Select Anidados (con select2) | Django'
         context['title3'] = 'Autocompletado (con jquery UI) | Django'
+        context['title4'] = 'Autocompletado (con select2) | Django'
         context['form'] = TestForm()
         return context

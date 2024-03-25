@@ -68,10 +68,27 @@
   </div>
 </form>
 
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="fas fa-plus"></i>
+        {{ title4 }}
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label>Buscador de Categorías</label>
+        {{form.search2}}
+      </div>
+    </div>
+  </div>
+</form>
+
 <script>
   var select_products2 = $('select[name="productos2"]');
 
   $(function () {
+    // Select anidado
     $('select[name="categorias"]').on("change", function () {
       var id = $(this).val();
       var select_products = $('select[name="productos"]');
@@ -109,6 +126,7 @@
         });
     });
 
+    // Select anidado con Select2
     $(".select2").select2({
       theme: "bootstrap4",
       language: "es",
@@ -154,6 +172,7 @@
       console.log(value);
     });
 
+    // Autocompletado con Jquery UI
     $( 'input[name="search"]' ).autocomplete({
       source: function(request,response){
         $.ajax({
@@ -179,6 +198,32 @@
       select: function(event, ui) {
         console.log (ui.item);
       }
+    });
+
+    // Autocompletado con Select2
+    $('select[name="search2"]').select2({
+      theme: "bootstrap4",
+      language: 'es',
+      allowClear: true,
+      ajax: {
+          delay: 250,
+          type: 'POST',
+          url: window.location.pathname,
+          data: function (params) {
+              var queryParameters = {
+                  term: params.term,
+                  action: 'autocomplete_2'
+              }
+              return queryParameters;
+          },
+          processResults: function (data) {
+              return {
+                  results: data
+              };
+          },
+      },
+      placeholder: 'Ingrese una descripción',
+      minimumInputLength: 1,
     });
   });
 </script>
