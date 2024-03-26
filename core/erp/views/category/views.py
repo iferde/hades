@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -8,13 +9,16 @@ from django.utils.decorators import method_decorator
 
 from core.erp.forms import CategoryForm
 from core.erp.models import Category
+from core.erp.mixins import IsSuperuserMixin, ValidarPermisosMixin
 
-class CategoryListView(ListView):
+class CategoryListView(LoginRequiredMixin, ValidarPermisosMixin, ListView):
+    permission_required = ('erp.view_category',)
     model = Category
     template_name = 'category/list.html'
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required) # Proteger vista con login
+    # Eliminamos el decorador porque podemos usar la clase LoginRequiredMixin para hacer la misma validación.
+    #@method_decorator(login_required) # Proteger vista con login
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
