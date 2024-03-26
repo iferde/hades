@@ -1,5 +1,4 @@
 $(function () {
-    console.log(data)
     $('#data').DataTable({
         responsive: true,
         autoWidth: false,

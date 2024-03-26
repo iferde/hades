@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from django.forms import *
 
 from core.erp.models import Category, Product, Client
@@ -29,7 +30,6 @@ class CategoryForm(ModelForm):
                 }
             ),
         }
-        exclude = ['user_updated', 'user_creation']
 
     def save(self, commit=True):
         data = {}
@@ -43,12 +43,6 @@ class CategoryForm(ModelForm):
             data['error'] = str(e)
         return data
 
-    # def clean(self):
-    #     cleaned = super().clean()
-    #     if len(cleaned['name']) <= 50:
-    #         raise forms.ValidationError('Validacion xxx')
-    #         # self.add_error('name', 'Le faltan caracteres')
-    #     return cleaned
 
 class ProductForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -64,9 +58,14 @@ class ProductForm(ModelForm):
                     'placeholder': 'Ingrese un nombre',
                 }
             ),
+            'cat': Select(
+                attrs={
+                    'class': 'select2',
+                    'style': 'width: 100%'
+                }
+            ),
         }
-        exclude = ['user_updated', 'user_creation']
-    
+
     def save(self, commit=True):
         data = {}
         form = super()
@@ -78,7 +77,8 @@ class ProductForm(ModelForm):
         except Exception as e:
             data['error'] = str(e)
         return data
-    
+
+
 class ClientForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -104,10 +104,10 @@ class ClientForm(ModelForm):
                 }
             ),
             'date_birthday': DateInput(format='%Y-%m-%d',
-                attrs={
-                    'value': datetime.now().strftime('%Y-%m-%d'),
-                }
-            ),
+                                       attrs={
+                                           'value': datetime.now().strftime('%Y-%m-%d'),
+                                       }
+                                       ),
             'address': TextInput(
                 attrs={
                     'placeholder': 'Ingrese su dirección',
@@ -115,7 +115,6 @@ class ClientForm(ModelForm):
             ),
             'gender': Select()
         }
-        exclude = ['user_updated', 'user_creation']
 
     def save(self, commit=True):
         data = {}
@@ -136,31 +135,24 @@ class ClientForm(ModelForm):
     #         # self.add_error('name', 'Le faltan caracteres')
     #     return cleaned
 
+
 class TestForm(Form):
-    categorias = ModelChoiceField(queryset=Category.objects.all(), widget=Select(attrs={
-        'class':'form-control'
+    categories = ModelChoiceField(queryset=Category.objects.all(), widget=Select(attrs={
+        'class': 'form-control select2',
+        'style': 'width: 100%'
     }))
 
-    productos = ModelChoiceField(queryset=Product.objects.none(), widget=Select(attrs={
-        'class':'form-control'
+    products = ModelChoiceField(queryset=Product.objects.none(), widget=Select(attrs={
+        'class': 'form-control select2',
+        'style': 'width: 100%'
     }))
 
-    categorias2 = ModelChoiceField(queryset=Category.objects.all(), widget=Select(attrs={
-        'class':'form-control select2', 'style':'width:100%'
-    }))
+    # search = CharField(widget=TextInput(attrs={
+    #     'class': 'form-control',
+    #     'placeholder': 'Ingrese una descripción'
+    # }))
 
-    productos2 = ModelChoiceField(queryset=Product.objects.none(), widget=Select(attrs={
-        'class':'form-control select2', 'style':'width:100%'
-    }))
-
-    #Autocompletar con Jquery UI
-
-    search = CharField(widget=TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Ingrese una descripción'
-    }))
-
-    # Autocompletar con Select2
-    search2 = ModelChoiceField(queryset=Product.objects.none(), widget=Select(attrs={
-        'class':'form-control select2', 'style':'width:100%'
+    search = ModelChoiceField(queryset=Product.objects.none(), widget=Select(attrs={
+        'class': 'form-control select2',
+        'style': 'width: 100%'
     }))
